@@ -9,15 +9,21 @@ const initialTodos = [
 ];
 
 // CREATE 생성
+// EDIT 수정
 // TOGGLE 껐다 켰다
 // REMOVE 지우기
-// 세 가지 액션들에 대해서 상태 업데이트
+// 네 가지 액션들에 대해서 상태 업데이트
 function todoReducer(state, action) {
     switch (action.type) { // 만약 액션 타입이 ~ 이라면?
         case "CREATE":
             return state.concat(action.todo); 
             //액션 항목 안에 todo 넣어서 dispatch 해줄 것
             //state 배열에 action.todo 추가하여 리턴
+        case "EDIT":
+            return state.map((todo) =>
+                todo.id === action.id ? {...todo, text: action.text } : todo
+                // 만약 둘이 같다면 action이 정의한 내용으로 바꾼다.
+            );
         case "TOGGLE":
             return state.map((todo) =>
                 todo.id === action.id ? { ...todo, done: !todo.done } : todo
