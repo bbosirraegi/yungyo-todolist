@@ -37,7 +37,7 @@ const TodoHeadBlock = styled.div`
     }
 
     .tasks-get {
-        color: #00CCFF;
+        color: #ff6b6b;
         font-size: 18px;
         margin-top: 40px;
         font-weight: bold;
