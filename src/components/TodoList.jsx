@@ -18,11 +18,12 @@ function TodoList() {
     <TodoListBlock>
       {/* <TodoItem text="프로젝트 생성하기" done={true} /> 이거 바꾸기*/}
       {todos.map(todo => (
-        <TodoItem
+        <TodoItem //todos 값 보내주기
           key={todo.id} // key값 필수
           id={todo.id}
           text={todo.text}
           done={todo.done}
+          emoji={todo.emoji}
         />
       ))}
     </TodoListBlock>

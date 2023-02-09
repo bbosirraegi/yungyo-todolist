@@ -122,7 +122,7 @@ function TodoItem({ id, text, done, emoji }) {
       }
     });
     setValue(value); //수정된 값으로
-    onEdit(false); //닫아줘야하므로
+    onEdit(false); //닫아줘야하므로 
   };
 
 
@@ -145,8 +145,8 @@ function TodoItem({ id, text, done, emoji }) {
         <MdDelete />
       </Remove>
       <Emoji emoji={emoji} onClick={onEmoji}>
-        {value}
-        {/* <MdFavorite /> */}
+        {/* {value} */}
+        <MdFavorite />
       </Emoji>
     </TodoItemBlock>
   );
