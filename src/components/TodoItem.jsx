@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { MdDone, MdDelete } from 'react-icons/md';
+import { MdDone, MdDelete, MdFavorite } from 'react-icons/md';
 import { useTodoDispatch } from '../TodoContext';
+
+
 
 const Remove = styled.div`
   display: flex;
@@ -47,6 +49,22 @@ const CheckCircle = styled.div`
     `}
 `;
 
+const Emoji = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dee2e6;
+  font-size: 24px;
+  margin-left: 2px;
+  cursor: pointer;
+  ${props =>
+    props.emoji &&
+    css`
+      color: #ff6b6b;
+    `}
+`;
+
+
 const Text = styled.div`
   flex: 1;
   font-size: 21px;
@@ -64,7 +82,7 @@ const Editdiv = styled.form`
   position: absolute;
   margin-left: 50px;
   margin-top: 2px;
-  width: 70%;
+  width: 65%;
 `;
 
 const Edit = styled.input`
@@ -78,10 +96,11 @@ const Edit = styled.input`
 `;
 
 
-function TodoItem({ id, done, text }) {
+function TodoItem({ id, text, done, emoji }) {
   const dispatch = useTodoDispatch();
-  const onToggle = () => dispatch({ type: 'TOGGLE', id }); //껐다켰다
-  const onRemove = () => dispatch({ type: 'REMOVE', id });
+  const onToggle = () => dispatch({ type: 'TOGGLE', id }); //체크박스 껐다켰다
+  const onEmoji = () => dispatch({ type: 'EMOJI', id }); //이모지 껐다켰다
+  const onRemove = () => dispatch({ type: 'REMOVE', id }); //삭제
   // id : props 받은 것 넣어준다.
 
   const [edit, setEdit] = useState(false); // 상태관리, 기본값 false
@@ -99,7 +118,7 @@ function TodoItem({ id, done, text }) {
       type: 'EDIT',
       todo: {
         id,
-        text: value
+        text: value,
       }
     });
     setValue(value); //수정된 값으로
@@ -110,22 +129,25 @@ function TodoItem({ id, done, text }) {
   return (
     <TodoItemBlock>
       <CheckCircle done={done} onClick={onToggle}>{done && <MdDone />}</CheckCircle>
-      <Text done={done} onClick={onEdit}>
-        {value}
-        {/* text에서 value로 바꿔줘야한다. 값이 변경되기 때문.?? */}
-      </Text>
-      {edit && (<Editdiv onSubmit={onSubmit}>
-        <Edit onClick={onEdit} 
-          autoFocus placeholder={text}
-          //여기는 text를 해줘도 된다. 값이 변경됐기 때문.
-          onChange={onChange}
-          value={value}
-        >
-        </Edit>
-      </Editdiv>)}
+        <Text done={done} onClick={onEdit}>
+          {value}
+          {/* text에서 value로 바꿔줘야한다. 값이 변경되기 때문.?? */}
+        </Text>
+        {edit && (<Editdiv onSubmit={onSubmit}>
+          <Edit onClick={onEdit} 
+            autoFocus placeholder={value}
+            onChange={onChange}
+            value={value}
+          >
+          </Edit>
+        </Editdiv>)}
       <Remove onClick={onRemove}>
         <MdDelete />
       </Remove>
+      <Emoji emoji={emoji} onClick={onEmoji}>
+        {value}
+        {/* <MdFavorite /> */}
+      </Emoji>
     </TodoItemBlock>
   );
 }

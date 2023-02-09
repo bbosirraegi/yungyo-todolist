@@ -2,15 +2,16 @@ import React, { useReducer, createContext, useContext, useRef } from "react";
 
 // 기본 객체 만들어주기. 배열
 const initialTodos = [
-    { id: 1, text: "프로젝트 생성하기", done: true },
-    { id: 2, text: "컴포넌트 스타일링 하기", done: true },
-    { id: 3, text: "Context 만들기", done: false },
-    { id: 4, text: "기능 구현하기", done: false }
+    { id: 1, text: "프로젝트 생성하기", done: true, emoji: false },
+    { id: 2, text: "컴포넌트 스타일링 하기", done: true, emoji: false },
+    { id: 3, text: "Context 만들기", done: false, emoji: true },
+    { id: 4, text: "기능 구현하기", done: false, emoji: true }
 ];
 
 // CREATE 생성
 // EDIT 수정
-// TOGGLE 껐다 켰다
+// TOGGLE 체크 껐다 켰다
+// Emoji 이모지 껐다 켰다
 // REMOVE 지우기
 // 네 가지 액션들에 대해서 상태 업데이트
 function todoReducer(state, action) {
@@ -23,6 +24,11 @@ function todoReducer(state, action) {
             return state.map((todo) =>
                 todo.id === action.id ? {...todo, text: action.text } : todo
                 // 만약 둘이 같다면 action이 정의한 내용으로 바꾼다.
+            );
+        case "EMOJI":
+            return state.map((todo) =>
+                todo.id === action.id ? { ...todo, emoji: !todo.emoji } : todo
+                // 만약 둘이 같다면 emoji 값을 기존 값에서 반전시켜서 업데이트. 
             );
         case "TOGGLE":
             return state.map((todo) =>

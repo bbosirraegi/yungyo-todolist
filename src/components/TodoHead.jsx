@@ -23,8 +23,21 @@ const TodoHeadBlock = styled.div`
         font-size: 21px;
     }
 
+    .tasks {
+      display: flex;
+      justify-content: space-between;
+      // 양 끝에 나타나게
+    }
+
     .tasks-left {
         color: #20c997;
+        font-size: 18px;
+        margin-top: 40px;
+        font-weight: bold;
+    }
+
+    .tasks-get {
+        color: #00CCFF;
         font-size: 18px;
         margin-top: 40px;
         font-weight: bold;
@@ -36,6 +49,8 @@ function TodoHead() {
   const todos = useTodoState();
   // todo 항목들 중에서 done 값이 false 인 것만 가져오기
   const undoneTasks = todos.filter(todo => !todo.done);
+  // todo 항목들 중에서 emoji 값이 true 인 것만 가져오기
+  const emojiTasks = todos.filter(todo => todo.emoji);
 
   const today = new Date();
   // 오늘 날짜 (~년~월~일)
@@ -53,7 +68,11 @@ function TodoHead() {
     <TodoHeadBlock>
       <h1>{dateString}</h1>
       <div className="day">{dayName}</div>
-      <div className="tasks-left">할 일 {undoneTasks.length}개 남음</div>
+      <div className="tasks">
+        <div className="tasks-left">할 일 {undoneTasks.length}개 남음</div>
+        <div className="tasks-get">❤ {emojiTasks.length}</div>
+      </div>
+      
     </TodoHeadBlock>
   )
 }
