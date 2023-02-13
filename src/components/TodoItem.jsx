@@ -145,7 +145,6 @@ function TodoItem({ id, text, done, emoji }) {
         <MdDelete />
       </Remove>
       <Emoji emoji={emoji} onClick={onEmoji}>
-        {/* {value} */}
         <MdFavorite />
       </Emoji>
     </TodoItemBlock>
