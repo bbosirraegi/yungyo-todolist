@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useTodoState } from "../TodoContext";
+import RoutineTemplate from './RoutineTemplate';
+import RoutineHead from './RoutineHead';
+import RoutineList from './RoutineList';
 
 const TodoHeadBlock = styled.div`
     // 현재 날짜, 요일, 몇 개 항목이 안끝났는지 알려줄 거다
@@ -9,12 +12,17 @@ const TodoHeadBlock = styled.div`
     padding-right: 32px;
     padding-bottom: 24px;
     border-bottom: 1px solid #e9ecef;
+    position: relative;
 
     // scss 문법
     h1 {
         margin: 0;
         font-size: 36px;
         color: #343a40;
+    }
+
+    .dayroutine {
+      display: flex;
     }
 
     .day {
@@ -42,6 +50,16 @@ const TodoHeadBlock = styled.div`
         margin-top: 40px;
         font-weight: bold;
     }
+
+    .click-routine {
+        color: #feda00;
+        font-size: 23px;
+        margin-top: 0%;
+        margin-left: 6px;
+        font-weight: bold;
+        -webkit-text-stroke: 0.3px #787878;
+        cursor: pointer;
+    }
 `;
 
 function TodoHead() {
@@ -64,10 +82,27 @@ function TodoHead() {
     weekday: 'long'
   });
 
+  const [routine, setRoutine] = useState(false); // 상태관리, 기본값 false
+  const onRoutine = () => setRoutine(!routine); // routine 기존값 반전
+  // 요일 옆 별 클릭하면 즐겨찾기 창 켜지게 (true)
+
   return (
     <TodoHeadBlock>
       <h1>{dateString}</h1>
-      <div className="day">{dayName}</div>
+      <div className='dayroutine'>
+        <div className="day">{dayName}</div>
+        <div>
+          <div className="click-routine" onClick={onRoutine}>★</div>
+          {routine && 
+            <RoutineTemplate setRoutine={setRoutine}>
+              {/* RoutineTemplate컴포넌트 내부에서 X클릭 시(closeRoutine),
+              setRoutine을 props로 전달한다.*/}
+              <RoutineHead />
+              <RoutineList />
+            </RoutineTemplate> 
+          }
+        </div>
+      </div>
       <div className="tasks">
         <div className="tasks-left">할 일 {undoneTasks.length}개 남음</div>
         <div className="tasks-get">❤ {emojiTasks.length}</div>

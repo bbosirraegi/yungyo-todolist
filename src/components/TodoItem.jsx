@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { MdDone, MdDelete, MdFavorite } from 'react-icons/md';
+import { MdDone, MdDelete, MdFavorite, MdStar } from 'react-icons/md';
 import { useTodoDispatch } from '../TodoContext';
 
 
@@ -64,6 +64,22 @@ const Emoji = styled.div`
     `}
 `;
 
+const Routine = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dee2e6;
+  font-size: 25px;
+  margin-left: 2px;
+  margin-bottom: 1px;
+  cursor: pointer;
+  ${props =>
+    props.routine &&
+    css`
+      color: #feda00;
+    `}
+`;
+
 
 const Text = styled.div`
   flex: 1;
@@ -96,10 +112,11 @@ const Edit = styled.input`
 `;
 
 
-function TodoItem({ id, text, done, emoji }) {
+function TodoItem({ id, text, done, emoji, routine }) {
   const dispatch = useTodoDispatch();
   const onToggle = () => dispatch({ type: 'TOGGLE', id }); //체크박스 껐다켰다
   const onEmoji = () => dispatch({ type: 'EMOJI', id }); //이모지 껐다켰다
+  const onRoutine = () => dispatch({ type: 'ROUTINE', id }); //루틴 껐다켰다
   const onRemove = () => dispatch({ type: 'REMOVE', id }); //삭제
   // id : props 받은 것 넣어준다.
 
@@ -147,6 +164,9 @@ function TodoItem({ id, text, done, emoji }) {
       <Emoji emoji={emoji} onClick={onEmoji}>
         <MdFavorite />
       </Emoji>
+      <Routine routine={routine} onClick={onRoutine}>
+        <MdStar />
+      </Routine>
     </TodoItemBlock>
   );
 }

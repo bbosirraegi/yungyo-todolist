@@ -2,10 +2,10 @@ import React, { useReducer, createContext, useContext, useRef } from "react";
 
 // 기본 객체 만들어주기. 배열
 const initialTodos = [
-    { id: 1, text: "프로젝트 생성하기", done: true, emoji: false },
-    { id: 2, text: "컴포넌트 스타일링 하기", done: true, emoji: false },
-    { id: 3, text: "Context 만들기", done: false, emoji: true },
-    { id: 4, text: "기능 구현하기", done: false, emoji: true }
+    { id: 1, text: "프로젝트 생성하기", done: true, emoji: false, routine: false },
+    { id: 2, text: "컴포넌트 스타일링 하기", done: true, emoji: false, routine: false },
+    { id: 3, text: "Context 만들기", done: false, emoji: true, routine: true },
+    { id: 4, text: "기능 구현하기", done: false, emoji: true, routine: true } // <---routine
 ];
 
 // CREATE 생성
@@ -30,6 +30,11 @@ function todoReducer(state, action) {
                 todo.id === action.id ? { ...todo, emoji: !todo.emoji } : todo
                 // 만약 둘이 같다면 emoji 값을 기존 값에서 반전시켜서 업데이트. 
             );
+        case "ROUTINE":
+            return state.map((todo) =>
+                todo.id === action.id ? { ...todo, routine: !todo.routine } : todo
+                // 만약 둘이 같다면 emoji 값을 기존 값에서 반전시켜서 업데이트. 
+            );
         case "TOGGLE":
             return state.map((todo) =>
                 todo.id === action.id ? { ...todo, done: !todo.done } : todo
@@ -40,6 +45,23 @@ function todoReducer(state, action) {
             // 모든 todo 항목들에 대하여 action id와 todo id 가 일치하지 않는 것만 가져오기
             // 그럼 일치하는 것들은 사라지게 된다 (일치하지 않는 것만 가져오니까)
         
+        //즐겨찾기
+        case "CREATE_ROUTINE":
+            return state.concat(action.todo); 
+            //액션 항목 안에 todo 넣어서 dispatch 해줄 것
+            //state 배열에 action.todo 추가하여 리턴
+        case "REMOVE_ROUTINE":
+            return state.map((todo) =>
+                todo.id === action.id ? {...todo, routine: false } : todo
+            );
+            // 만약 둘이 같다면 routine 값을 false로 지정해준다. (안보이게)
+        case "EDIT_ROUTINE":
+            return state.map((todo) =>
+                todo.id === action.id ? {...todo, text: action.text } : todo
+                // 만약 둘이 같다면 action이 정의한 내용으로 바꾼다.
+            );
+
+
         default: // 처리할 수 없는 액션 온다면 throw
             throw new Error(`Unhandled action type : ${action.type}`);
     }

@@ -1,4 +1,5 @@
 // 중앙에 정렬된 흰색 박스를 보여주기
+
 import styled from 'styled-components';
 
 //스타일링
@@ -20,7 +21,9 @@ const TodoTemplateBlock = styled.div`
 `;
 
 function TodoTemplate({ children }) {
-  return <TodoTemplateBlock>{children}</TodoTemplateBlock>;
-}
+  return (
+    <TodoTemplateBlock>{children}</TodoTemplateBlock>
+  );
+};
 
 export default TodoTemplate;
